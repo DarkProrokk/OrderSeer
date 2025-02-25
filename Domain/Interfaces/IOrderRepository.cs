@@ -8,8 +8,10 @@ public interface IOrderRepository
     public Task<Order?> GetAsync(int orderId);
     
     public Task<Order?> GetAsync(Guid guid);
+    
+    public Task<IEnumerable<Order>> GetByUserGuid(Guid guid);
 
     public Task<IEnumerable<Order?>> GetOrdersByUserGuidAsync(Guid userReferenceGuid);
 
-    public Task AddAsync(Guid userReference, OrderStatus orderStatus);
+    public Task AddAsync(Guid userReference, Guid orderId);
 }
