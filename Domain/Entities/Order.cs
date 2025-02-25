@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Enum;
+using Domain.Exceptions;
 using Domain.Primitives;
 
 namespace Domain.Entities;
@@ -26,7 +27,7 @@ public class Order: Entity
     public void ChangeStatus(OrderStatus newStatus)
     {
         if(!CanChangeStatus(newStatus))
-            throw new ArgumentException($"Cannot change order status from {OrderStatus} to {newStatus}");
+            throw new WrongStatusException($"Cannot change order status from {OrderStatus} to {newStatus}");
         OrderStatus = newStatus;
     }
 
@@ -41,22 +42,15 @@ public class Order: Entity
         };
     }
 
-    public static Order CreateOrder(Guid userId, OrderStatus orderStatus)
+    public static Order CreateOrder(Guid userId, Guid orderId)
     {
-        if (userId == Guid.Empty) throw new ArgumentException($"User {userId} cannot be empty");
-        if (!CanCreateOrder(orderStatus)) 
-            throw new ArgumentException($"Cannot create order with status {orderStatus}." +
-                                        $" Initial order status must be is {OrderStatus.Pending}.");
+        if (userId == Guid.Empty) throw new ArgumentException($"User guid {userId} cannot be empty");
+        if (orderId == Guid.Empty) throw new ArgumentException($"Order guid {orderId} cannot be empty");
         return new Order()
         {
-            Guid = Guid.NewGuid(),
+            Guid = orderId,
             UserReference = userId,
-            OrderStatus = orderStatus
+            OrderStatus = OrderStatus.Pending
         };
-    }
-
-    private static bool CanCreateOrder(OrderStatus newStatus)
-    {
-        return newStatus is OrderStatus.Pending;
     }
 }
