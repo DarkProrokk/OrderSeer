@@ -13,6 +13,8 @@
 
     <ItemGroup>
       <PackageReference Include="Confluent.Kafka" Version="2.8.0" />
+      <PackageReference Include="Confluent.SchemaRegistry" Version="2.8.0" />
+      <PackageReference Include="Confluent.SchemaRegistry.Serdes.Avro" Version="2.8.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.2">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Interfaces\" />
+      <Folder Include="AvroScheme\" />
     </ItemGroup>
 
     <ItemGroup>

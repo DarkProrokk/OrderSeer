@@ -1,4 +1,7 @@
 using Application.Interfaces;
+using Application.Models;
+using Infrastructure.Interfaces;
+using Infrastructure.Mappers;
 
 namespace Infrastructure.Kafka;
 
@@ -14,5 +17,18 @@ public class KafkaProducerService(IKafkaProducer kafkaProducer): IKafkaProducerS
     {
         Console.WriteLine(_dqlTopic);
         await kafkaProducer.ProduceAsync(_dqlTopic, key, message, cancellationToken);
+    }
+    
+    public async Task ProduceWithSchemeAsync<T>(string topic, string key, T message, CancellationToken cancellationToken = default)
+    {
+        await kafkaProducer.ProduceWithSchemeAsync(topic, key, message, cancellationToken);
+    }
+
+    public async Task PlaceOrderAsync(string topic, string key, KafkaOrderStatusChangedModel message,
+        CancellationToken cancellationToken = default)
+    {
+        IMapper mapper = new OrderMapper();
+        var mappedModel = mapper.ToAvroModel(message);
+        await kafkaProducer.ProduceWithSchemeAsync(topic, key, mappedModel, cancellationToken);
     }
 }

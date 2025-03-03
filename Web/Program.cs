@@ -39,7 +39,8 @@ builder.Services.AddSingleton<IKafkaConsumer>(sp =>
 });
 builder.Services.AddSingleton<IKafkaProducer>(sp =>
 {
-    return new KafkaProducer(producerConfig);
+    var logger = sp.GetService<ILogger<KafkaProducer>>();
+    return new KafkaProducer(producerConfig, logger);
 });
 
 

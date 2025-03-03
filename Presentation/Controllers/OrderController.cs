@@ -14,4 +14,12 @@ public class OrderController(IOrderService orderService): ControllerBase
         var orders = await orderService.GetByUserGuid(userGuid);
         return Ok(orders);
     }
+    
+    [HttpGet]
+    [Route("[action]")]
+    public async Task<IActionResult> Test()
+    {
+        await orderService.TestOrderProduce();
+        return Ok();
+    }
 }
