@@ -1,8 +1,9 @@
 using Application.Models;
+using KafkaMessages;
 
 namespace Infrastructure.Interfaces;
 
 public interface IKafkaDeserializer
 {
-    KafkaOrderStatusChangedModel Deserialize(string json);
+    OrderStatusChangedEvent Deserialize(string json);
 }

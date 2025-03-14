@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Application.Mappers;
 using Application.Models;
 using Domain.Interfaces;
+using KafkaMessages;
 
 namespace Application.Services;
 
@@ -16,12 +17,15 @@ public class OrderService(IUnitOfWork unitOfWork, IKafkaProducerService kafkaPro
     public async Task TestOrderProduce()
     {
         var cancellationToken = new CancellationTokenSource();
-        var msg = new KafkaOrderStatusChangedModel();
-        msg.OrderId = Guid.NewGuid();
-        var status = new Status();
-        status.code = 1;
-        status.name = "Pending";
-        msg.Status = status;
+        var msg = new OrderStatusChangedEvent
+        {
+            OrderId = Guid.NewGuid(),
+            Status = new Status
+            {
+                code = 1,
+                name = "Pending"
+            }
+        };
         await kafkaProducerService.PlaceOrderAsync("order_status_changed", "key", msg, cancellationToken.Token);
     }
 }

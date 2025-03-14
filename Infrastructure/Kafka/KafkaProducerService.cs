@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Application.Models;
 using Infrastructure.Interfaces;
 using Infrastructure.Mappers;
+using KafkaMessages;
 
 namespace Infrastructure.Kafka;
 
@@ -24,7 +25,7 @@ public class KafkaProducerService(IKafkaProducer kafkaProducer): IKafkaProducerS
         await kafkaProducer.ProduceWithSchemeAsync(topic, key, message, cancellationToken);
     }
 
-    public async Task PlaceOrderAsync(string topic, string key, KafkaOrderStatusChangedModel message,
+    public async Task PlaceOrderAsync(string topic, string key, OrderStatusChangedEvent message,
         CancellationToken cancellationToken = default)
     {
         IMapper mapper = new OrderMapper();

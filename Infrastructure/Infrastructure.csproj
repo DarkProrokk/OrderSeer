@@ -21,6 +21,7 @@
       </PackageReference>
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
+      <PackageReference Include="Orderseer.Common.KafkaMessages" Version="1.0.3" />
     </ItemGroup>
 
     <ItemGroup>
