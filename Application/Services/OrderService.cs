@@ -8,11 +8,6 @@ namespace Application.Services;
 
 public class OrderService(IUnitOfWork unitOfWork, IKafkaProducerService kafkaProducerService): IOrderService
 {
-    public async Task<IEnumerable<OrderViewModel>> GetByUserGuid(Guid userGuid)
-    {
-        var order = await unitOfWork.OrderRepository.GetByUserGuid(userGuid);
-        return order.ToOrderViewModel();
-    }
 
     public async Task TestOrderProduce()
     {

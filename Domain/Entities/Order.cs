@@ -9,8 +9,6 @@ public class Order: Entity
 {
     public Guid Guid { get; private set; }
 
-    public Guid UserReference { get; private set; }
-
     public int StatusId { get; private set; }
 
     public virtual ICollection<OrderStatusHistory> OrderStatusHistories { get; private set; } = new List<OrderStatusHistory>();
@@ -42,14 +40,12 @@ public class Order: Entity
         };
     }
 
-    public static Order CreateOrder(Guid userId, Guid orderId)
+    public static Order CreateOrder(Guid orderId)
     {
-        if (userId == Guid.Empty) throw new ArgumentException($"User guid {userId} cannot be empty");
         if (orderId == Guid.Empty) throw new ArgumentException($"Order guid {orderId} cannot be empty");
         return new Order()
         {
             Guid = orderId,
-            UserReference = userId,
             OrderStatus = OrderStatus.Pending
         };
     }

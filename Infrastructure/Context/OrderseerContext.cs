@@ -1,10 +1,13 @@
 ﻿using Domain.Entities;
+using Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Context;
 
 public partial class OrderseerContext : DbContext
 {
+    private readonly OrderCreatedInterceptor _interceptor = new();
+    
     public OrderseerContext()
     {
     }
@@ -33,7 +36,6 @@ public partial class OrderseerContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Guid).HasColumnName("guid");
             entity.Property(e => e.StatusId).HasColumnName("status_id");
-            entity.Property(e => e.UserReference).HasColumnName("user_reference");
         });
 
         modelBuilder.Entity<OrderStatusHistory>(entity =>
@@ -79,6 +81,12 @@ public partial class OrderseerContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(_interceptor);
+        base.OnConfiguring(optionsBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

@@ -9,13 +9,6 @@ namespace Presentation.Controllers;
 public class OrderController(IOrderService orderService): ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetByUserGuid([FromQuery]Guid userGuid)
-    {
-        var orders = await orderService.GetByUserGuid(userGuid);
-        return Ok(orders);
-    }
-    
-    [HttpGet]
     [Route("[action]")]
     public async Task<IActionResult> Test()
     {

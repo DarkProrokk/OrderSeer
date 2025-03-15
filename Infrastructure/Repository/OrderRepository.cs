@@ -20,19 +20,13 @@ public class OrderRepository(OrderseerContext context, ILogger<OrderRepository> 
         logger.LogInformation($"GetAsync called with GUID {guid}");
         return await context.Orders.FindAsync(guid);
     }
-
-    public async Task<IEnumerable<Order?>> GetByUserGuid(Guid guid)
-    {
-        logger.LogInformation($"Get orders by userRefenceGuid {guid}");
-        return await context.Orders.Where(o => o.UserReference == guid).AsNoTracking().ToListAsync();
-    }
     
-    public async Task AddAsync(Guid userReference, Guid orderId)
+    public async Task AddAsync(Guid orderId)
     {
-        logger.LogInformation($"AddAsync called with userReference {userReference}, orderId {orderId}");
+        logger.LogInformation($"AddAsync called with orderId {orderId}");
         try
         {
-            Order order = Order.CreateOrder(userReference, orderId);
+            Order order = Order.CreateOrder(orderId);
             await context.Orders.AddAsync(order);
         }
         catch (ArgumentException e)

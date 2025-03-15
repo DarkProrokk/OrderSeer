@@ -15,14 +15,14 @@ public class OrderCreatedMessageHandler(IUnitOfWork unitOfWork, IKafkaProducerSe
     {
         try
         {
-            var orderData = JsonSerializer.Deserialize<OrderCreatedEvent>(message);
+            var orderData = JsonSerializer.Deserialize<OrderCreatedForProcessingEvent>(message);
             if (!orderData.Validate())
             {
                 logger.LogError($"Invalid message received: {message}");
                 await kafkaProducerService.ProduceInDlqAsync("error", "message was empty", cancellationToken);
                 return;
             }
-            await unitOfWork.OrderRepository.AddAsync(orderData.UserReference, orderData.OrderReference);
+            await unitOfWork.OrderRepository.AddAsync(orderData.OrderReference);
             await unitOfWork.SaveChangesAsync();
             logger.LogInformation($"OrderCreatedMessageHandler handled message");
         }
