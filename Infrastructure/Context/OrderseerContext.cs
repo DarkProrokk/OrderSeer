@@ -6,7 +6,8 @@ namespace Infrastructure.Context;
 
 public partial class OrderseerContext : DbContext
 {
-    private readonly OrderCreatedInterceptor _interceptor = new();
+    private readonly OrderCreatedInterceptor _orderCreatedInterceptor = new();
+    private readonly OrderStatusChangedInterceptor _orderStatusChangedInterceptor = new();
     
     public OrderseerContext()
     {
@@ -85,7 +86,8 @@ public partial class OrderseerContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(_interceptor);
+        optionsBuilder.AddInterceptors(_orderCreatedInterceptor);
+        optionsBuilder.AddInterceptors(_orderStatusChangedInterceptor);
         base.OnConfiguring(optionsBuilder);
     }
 

@@ -45,3 +45,44 @@ public class OrderCreatedInterceptor : SaveChangesInterceptor
     }
 
 }
+
+public class OrderStatusChangedInterceptor : SaveChangesInterceptor
+{
+    public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
+    {
+        var context = eventData.Context;
+        if (context == null) return result;
+
+        var modifiedOrders = context.ChangeTracker.Entries<Order>()
+            .Where(e => e.State == EntityState.Modified)
+            .ToList();
+
+        if (modifiedOrders.Any())
+        {
+            foreach (var entry in modifiedOrders)
+            {
+                var oldStatusId = (int)entry.OriginalValues["StatusId"]!;
+                var newStatusId = (int)entry.CurrentValues["StatusId"]!;
+                
+                var historyEntries = new OrderStatusHistory
+                {
+                    OrderId = entry.Entity.Id, // ID ещё нет, но EF сам проставит
+                    OldStatusId = oldStatusId,
+                    StatusId = newStatusId,
+                };
+                entry.Entity.OrderStatusHistories.Add(historyEntries);
+            }
+        }
+
+        return result;
+    }
+
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
+        DbContextEventData eventData,
+        InterceptionResult<int> result,
+        CancellationToken cancellationToken = default)
+    {
+        return new ValueTask<InterceptionResult<int>>(SavingChanges(eventData, result));
+    }
+
+}
