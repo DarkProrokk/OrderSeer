@@ -50,6 +50,7 @@ builder.Services.AddHostedService<KafkaConsumerService>();
 #endregion
 
 builder.Services.AddScoped<IMessageHandler, OrderCreatedMessageHandler>();
+builder.Services.AddScoped<IMessageHandler, OrderStatusChangedMessageHandler>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 var app = builder.Build();
 
