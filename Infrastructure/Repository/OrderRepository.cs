@@ -18,7 +18,7 @@ public class OrderRepository(OrderseerContext context, ILogger<OrderRepository> 
     public async Task<Order?> GetAsync(Guid guid)
     {
         logger.LogInformation($"GetAsync called with GUID {guid}");
-        return await context.Orders.FindAsync(guid);
+        return await context.Orders.FirstOrDefaultAsync(order => order.Guid == guid);
     }
     
     public async Task AddAsync(Guid orderId)
@@ -33,5 +33,11 @@ public class OrderRepository(OrderseerContext context, ILogger<OrderRepository> 
         {
             logger.LogError(e.Message, "ArgumentException occured");
         }
+    }
+
+    public void Update(Order order)
+    {
+        logger.LogInformation($"UpdateAsync called with orderId {order.Id}");
+        context.Orders.Update(order);
     }
 }
