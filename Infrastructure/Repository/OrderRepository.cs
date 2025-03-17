@@ -1,5 +1,4 @@
 using Domain.Entities;
-using Domain.Enum;
 using Domain.Interfaces;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,6 @@
 using System.Text.Json;
 using Application.Interfaces;
-using Domain.Enum;
+using Entities;
 using Domain.Interfaces;
 using KafkaMessages;
 using Microsoft.Extensions.Logging;

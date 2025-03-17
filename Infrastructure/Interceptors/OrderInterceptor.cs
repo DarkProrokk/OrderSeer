@@ -1,9 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using Domain.Entities;
-using Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Status = KafkaMessages.Status;
 
 namespace Infrastructure.Interceptors;
 

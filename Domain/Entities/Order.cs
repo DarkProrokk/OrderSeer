@@ -2,6 +2,7 @@
 using Domain.Enum;
 using Domain.Exceptions;
 using Domain.Primitives;
+using Entities;
 
 namespace Domain.Entities;
 

@@ -1,5 +1,3 @@
-using Application.Models;
-using Domain.Enum;
 using Infrastructure.Interfaces;
 using KafkaMessages;
 using Scheme.OrderStatusChanged;
