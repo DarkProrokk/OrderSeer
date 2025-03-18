@@ -11,8 +11,8 @@ public class OrderMapper: IMapper
     public OrderStatusChange ToAvroModel(OrderStatusChangedEvent model)
     {
         Scheme.OrderStatusChanged.Status status = new Scheme.OrderStatusChanged.Status();
-        status.code = model.Status.code;
-        status.name = model.Status.name;
+        status.code = (int)model.Status.Code;
+        status.name = model.Status.Name;
         return new OrderStatusChange
         {
             orderId = model.OrderId.ToString(),

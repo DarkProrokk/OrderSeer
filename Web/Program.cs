@@ -1,4 +1,5 @@
 using System.Reflection;
+using Application.Command;
 using Application.Handlers;
 using Application.Interfaces;
 using Application.Services;
@@ -6,6 +7,7 @@ using Confluent.Kafka;
 using Domain.Interfaces;
 using Infrastructure.Context;
 using Infrastructure;
+using Infrastructure.Handlers;
 using Infrastructure.Kafka;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +25,15 @@ builder.Services.AddDbContext<OrderseerContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+//add MediatR
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(OrderStatusChangeCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+});
+
 
 #region KafkaServices
 var kafkaConfig = builder.Configuration.GetSection("Kafka").GetSection("Consumer");
@@ -50,7 +61,6 @@ builder.Services.AddHostedService<KafkaConsumerService>();
 #endregion
 
 builder.Services.AddScoped<IMessageHandler, OrderCreatedMessageHandler>();
-builder.Services.AddScoped<IMessageHandler, OrderStatusChangedMessageHandler>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 var app = builder.Build();
 

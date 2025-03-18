@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Application.Mappers;
 using Application.Models;
 using Domain.Interfaces;
+using Entities;
 using KafkaMessages;
 
 namespace Application.Services;
@@ -17,8 +18,8 @@ public class OrderService(IUnitOfWork unitOfWork, IKafkaProducerService kafkaPro
             OrderId = Guid.NewGuid(),
             Status = new Status
             {
-                code = 1,
-                name = "Pending"
+                Code = OrderStatus.Pending,
+                Name = "Pending"
             }
         };
         await kafkaProducerService.PlaceOrderAsync("order_status_changed", "key", msg, cancellationToken.Token);

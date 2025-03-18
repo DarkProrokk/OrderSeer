@@ -11,8 +11,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="MediatR" Version="12.4.1" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.2" />
-      <PackageReference Include="Orderseer.Common.KafkaMessages" Version="1.0.4" />
+      <PackageReference Include="Orderseer.Common.Entities" Version="1.0.0" />
+      <PackageReference Include="Orderseer.Common.KafkaMessages" Version="1.0.5" />
+      <PackageReference Include="Orderseer.Common.Models" Version="1.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Query\" />
     </ItemGroup>
 
 </Project>

@@ -1,12 +1,10 @@
 using System.Text.Json;
 using Application.Interfaces;
-using Application.Models;
-using Domain.Entities;
 using Domain.Interfaces;
 using KafkaMessages;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Handlers;
+namespace Infrastructure.Handlers;
 
 public class OrderCreatedMessageHandler(IUnitOfWork unitOfWork, IKafkaProducerService kafkaProducerService, ILogger<OrderCreatedMessageHandler> logger): IMessageHandler
 {

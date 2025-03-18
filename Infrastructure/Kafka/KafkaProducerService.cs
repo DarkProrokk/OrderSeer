@@ -1,3 +1,4 @@
+using Application.Command;
 using Application.Interfaces;
 using Application.Models;
 using Infrastructure.Interfaces;
@@ -19,7 +20,14 @@ public class KafkaProducerService(IKafkaProducer kafkaProducer): IKafkaProducerS
         Console.WriteLine(_dqlTopic);
         await kafkaProducer.ProduceAsync(_dqlTopic, key, message, cancellationToken);
     }
-    
+
+    public async Task ProduceInStatusChangedAsync(string key, OrderStatusChangeCommand message,
+        CancellationToken cancellationToken = default)
+    {
+        var @event = Mappers.Mapper.Map(message);
+        await kafkaProducer.ProduceAsync("order_status_changed", key, @event, cancellationToken);
+    }
+
     public async Task ProduceWithSchemeAsync<T>(string topic, string key, T message, CancellationToken cancellationToken = default)
     {
         await kafkaProducer.ProduceWithSchemeAsync(topic, key, message, cancellationToken);
