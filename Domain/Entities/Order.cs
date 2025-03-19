@@ -25,6 +25,7 @@ public class Order: Entity
 
     public void ChangeStatus(OrderStatus newStatus)
     {
+        if (newStatus == OrderStatus) throw new WrongStatusException($"Status already is {newStatus}");
         if(!CanChangeStatus(newStatus))
             throw new WrongStatusException($"Cannot change order status from {OrderStatus} to {newStatus}");
         OrderStatus = newStatus;
@@ -32,11 +33,12 @@ public class Order: Entity
 
     private bool CanChangeStatus(OrderStatus newStatus)
     {
-        return newStatus is OrderStatus.Cancelled || OrderStatus switch
+        return OrderStatus switch
         {
             OrderStatus.Pending => newStatus is OrderStatus.Processing or OrderStatus.Cancelled,
-            OrderStatus.Processing => newStatus is OrderStatus.Pending,
-            OrderStatus.Shipped => newStatus is OrderStatus.Delivered,
+            OrderStatus.Processing => newStatus is OrderStatus.Shipped or OrderStatus.Cancelled,
+            OrderStatus.Shipped => newStatus is OrderStatus.Delivered or OrderStatus.Cancelled,
+            OrderStatus.Delivered => newStatus is OrderStatus.Returned,
             _ => false
         };
     }
