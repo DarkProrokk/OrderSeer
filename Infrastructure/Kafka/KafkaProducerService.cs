@@ -1,16 +1,18 @@
+using System.Text.Json;
 using Application.Command;
 using Application.Interfaces;
-using Application.Models;
 using Infrastructure.Interfaces;
 using Infrastructure.Mappers;
 using KafkaMessages;
 
 namespace Infrastructure.Kafka;
 
-public class KafkaProducerService(IKafkaProducer kafkaProducer): IKafkaProducerService
+public class KafkaProducerService(IKafkaProducer kafkaProducer) : IKafkaProducerService
 {
     private readonly string _dqlTopic = "dead_letter_queue";
-    public async Task ProduceAsync<T>(string topic, string key, T message, CancellationToken cancellationToken = default)
+
+    public async Task ProduceAsync<T>(string topic, string key, T message,
+        CancellationToken cancellationToken = default)
     {
         await kafkaProducer.ProduceAsync(topic, key, message, cancellationToken);
     }
@@ -25,10 +27,12 @@ public class KafkaProducerService(IKafkaProducer kafkaProducer): IKafkaProducerS
         CancellationToken cancellationToken = default)
     {
         var @event = Mappers.Mapper.Map(message);
-        await kafkaProducer.ProduceAsync("order_status_changed", key, @event, cancellationToken);
+        var msg = JsonSerializer.Serialize(@event);
+        await kafkaProducer.ProduceAsync("order_status_changed", key, msg, cancellationToken);
     }
 
-    public async Task ProduceWithSchemeAsync<T>(string topic, string key, T message, CancellationToken cancellationToken = default)
+    public async Task ProduceWithSchemeAsync<T>(string topic, string key, T message,
+        CancellationToken cancellationToken = default)
     {
         await kafkaProducer.ProduceWithSchemeAsync(topic, key, message, cancellationToken);
     }
