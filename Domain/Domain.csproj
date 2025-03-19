@@ -8,6 +8,11 @@
 
     <ItemGroup>
       <PackageReference Include="Orderseer.Common.Entities" Version="1.0.0" />
+      <PackageReference Include="Orderseer.Common.Results" Version="1.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Results\" />
     </ItemGroup>
 
 </Project>

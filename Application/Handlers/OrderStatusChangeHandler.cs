@@ -2,8 +2,8 @@ using Application.Command;
 using Application.Interfaces;
 using Domain.Exceptions;
 using Domain.Interfaces;
-using Domain.Results;
 using MediatR;
+using Results;
 
 namespace Application.Handlers;
 
