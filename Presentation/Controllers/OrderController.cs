@@ -23,6 +23,7 @@ public class OrderController(IOrderService orderService, IMediator mediator): Co
     public async Task<IActionResult> CancelOrder(OrderStatusChangeCommand command)
     {
         var result = await mediator.Send(command);
-        return Ok(result);
+        if (result.IsSuccess) Ok(result);
+        return Conflict(result);
     }
 }
